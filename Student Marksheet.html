@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marksheet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .student-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+        .student-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        .marks-table th, .marks-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .marks-table th {
+            background-color: #f2f2f2;
+        }
+        .result {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .pass {
+            color: #27ae60;
+        }
+        .fail {
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Marksheet</h1>
+    <div id="marksheet-container"></div>
+
+    <script>
+        const totalMarks = 200;
+        const students = [
+            {
+                name: "Ali",
+                scienceMarks: 90,
+                englishMarks: 70,
+            },
+            {
+                name: "Huzaifa",
+                scienceMarks: 10,
+                englishMarks: 40,
+            },
+            {
+                name: "Asim",
+                scienceMarks: 40,
+                englishMarks: 60,
+            },
+        ];
+
+        function calculateMarks(student) {
+            const total = student.scienceMarks + student.englishMarks;
+            const percentage = (total / totalMarks) * 100;
+            return { percentage: percentage.toFixed(2), total };
+        }
+
+        function createStudentCard(student) {
+            const result = calculateMarks(student);
+            const passed = result.percentage >= 40;
+
+            return `
+                <div class="student-card">
+                    <div class="student-name">${student.name}</div>
+                    <table class="marks-table">
+                        <tr>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                        </tr>
+                        <tr>
+                            <td>Science</td>
+                            <td>${student.scienceMarks}</td>
+                        </tr>
+                        <tr>
+                            <td>English</td>
+                            <td>${student.englishMarks}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Marks</strong></td>
+                            <td><strong>${result.total} / ${totalMarks}</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Percentage</strong></td>
+                            <td><strong>${result.percentage}%</strong></td>
+                        </tr>
+                    </table>
+                    <div class="result ${passed ? 'pass' : 'fail'}">
+                        Result: ${passed ? 'PASSED' : 'FAILED'}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMarksheet() {
+            const container = document.getElementById('marksheet-container');
+            students.forEach(student => {
+                container.innerHTML += createStudentCard(student);
+            });
+        }
+
+        renderMarksheet();
+    </script>
+</body>
+</html>
